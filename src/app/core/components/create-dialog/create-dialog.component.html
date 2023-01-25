@@ -1,0 +1,20 @@
+
+<h1 mat-dialog-title style="text-align: center;">Create asset</h1>
+<div mat-dialog-content>
+  <mat-nav-list>
+    <!-- <mat-list-item *ngFor="let user of data.users">
+      <mat-icon mat-list-icon>person</mat-icon>
+
+    </mat-list-item> -->
+    <mat-form-field matform>
+      <input matInput [(ngModel)]="data.file"  placeholder="Insert the folder name" />
+    </mat-form-field>
+  </mat-nav-list>
+
+</div>
+
+<div mat-dialog-actions>
+
+  <!-- <button mat-button (click)="onNoClick()">No Thanks</button> -->
+  <button style="display: block; margin: auto" (click)="onSubmit()" mat-button [mat-dialog-close]="data.name" cdkFocusInitial>Ok</button>
+</div>

@@ -1,0 +1,26 @@
+<form  (ngSubmit)="save(myForm)" #myForm="ngForm">
+
+  <h1 mat-dialog-title>Create File <button mat-icon-button><mat-icon>person_add</mat-icon></button></h1>
+  <div mat-dialog-content>
+
+
+    <mat-nav-list>
+ <mat-chip-list >
+        <mat-chip (click)="moveFile(folder.fullPath)"  *ngFor="let folder of foldersOnly">
+
+            {{folder.fullPath}}
+
+
+        </mat-chip>
+      </mat-chip-list>
+      <mat-form-field matform>
+        <input matInput [(ngModel)]="data.newPath"  placeholder="Insert the folder name" />
+      </mat-form-field>
+      <button (click)="principalFolder()" mat-button [matDialogClose]="true" type="submit" >Principal folder</button>
+    </mat-nav-list>
+  </div>
+  <div mat-dialog-actions>
+    <!-- <button mat-button (click)="onNoClick()">No Thanks</button> -->
+    <button (click)="send()" mat-button [matDialogClose]="true" type="submit" >Ok</button>
+  </div>
+  </form>

@@ -1,0 +1,11 @@
+<div class="toolbar">
+  <div [routerLink]="['']" class="title"><span>{{"Technical assistance for project preparation of investment projects in the transport sector in Montenegro" | uppercase}}</span></div>
+  <app-search  [userCreator]="user.email"></app-search>
+
+  <div style="display: flex; justify-content: center; align-items:center; gap: .5rem;; width:100px">
+    <div style="display: flex; justify-content:center; align-items:center; overflow: hidden; width: 5vw; height: 50px; cursor: pointer">
+      <img class="profile" width="100%"  src={{user.image}} [routerLink]="['profile']" onerror="this.src = './assets/img/defaultProfile.png'"/>
+    </div>
+  </div>
+</div>
+

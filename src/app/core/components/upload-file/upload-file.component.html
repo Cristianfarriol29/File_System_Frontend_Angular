@@ -1,0 +1,28 @@
+<form  (ngSubmit)="save(myForm)" #myForm="ngForm">
+
+<h1 mat-dialog-title>Create File <button mat-icon-button><mat-icon>person_add</mat-icon></button></h1>
+<div mat-dialog-content>
+  <mat-nav-list>
+    <!-- <mat-list-item *ngFor="let user of data.users">
+      <mat-icon mat-list-icon>person</mat-icon>
+
+    </mat-list-item> -->
+    <div style="display: flex; flex-direction:column; align-items: center; justify-content:center; gap: 1rem" >
+      <div style="display: flex; flex-direction:column; align-items: center; justify-content:center">
+        <mat-label style="display: flex;align-items: center; justify-content:center;font-size: 2vh; gap: 0.3rem">Upload file    <mat-icon mat-list-icon style="font-size: 2vh">description</mat-icon></mat-label>
+        <input  type="file" ngModel name="fileToUpload" (change)="saveFile($event)"  />
+      </div>
+      <div style="display: flex; flex-direction:column; align-items: center; justify-content:center">
+      <mat-label style="display: flex;align-items: center; justify-content:center;font-size: 2vh; gap: 0.3rem">Upload folder <mat-icon mat-list-icon style="color: yellow !important; font-size: 2vh">folder</mat-icon></mat-label>
+      <input (change)="saveAllFiles($event)" type="file" webkitdirectory directory multiple="false"  >
+      </div>
+    </div>
+
+
+  </mat-nav-list>
+</div>
+<div mat-dialog-actions>
+  <!-- <button mat-button (click)="onNoClick()">No Thanks</button> -->
+  <button [disabled]="!fileToSend" (click)="handleTime()"  mat-button [matDialogClose]="true" type="submit" >Ok</button>
+</div>
+</form>

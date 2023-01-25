@@ -1,0 +1,22 @@
+<app-header *ngIf="user.token"></app-header>
+
+<router-outlet></router-outlet>
+<div
+  style="
+    height: 6vh;
+    background-color: rgb(237, 237, 237);
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    color: white;
+    justify-content: center;
+  "
+>
+  <!-- <div style="width: 70%; padding-right: 10%; text-align: center; font-size: 2vh; color: black">Acelerador Digital de TYPSA | 2023</div> -->
+  <div id="logos">
+    <img src="../../assets/img/logo.png" />
+    <img src="../../assets/img/decom-logo.png" />
+    <img src="../../assets/img/louis-berger-logo.png" />
+    <img src="../../assets/img/montenegro-logo.png" />
+  </div>
+</div>

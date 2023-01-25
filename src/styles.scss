@@ -1,0 +1,11 @@
+
+/* You can add global styles to this file, and also import other style files */
+
+html, body { height: 100%; }
+
+
+@import '../node_modules/primeng/resources/themes/lara-light-blue/theme.css';
+@import url('https://fonts.googleapis.com/css2?family=Mulish:wght@700&display=swap');
+
+
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }

@@ -1,0 +1,96 @@
+<span
+class="container"
+>
+  <mat-card
+    style="height: fit-content; display: flex; align-items:center; flex-direction: column; text-align: center"
+    [style]="{ width: '360px' }"
+    styleClass="p-card-shadow p-card"
+  >
+    <div>
+      <img
+        src="{{ user.image }}"
+        alt="Image"
+        style="width: 90%; margin-bottom: 20px"
+        onerror="this.src = './assets/img/defaultProfile.png'"
+      />
+    </div>
+    <div class="username">{{ fullName | titlecase }}</div>
+    <div class="username">{{ user.email | titlecase | lowercase }}</div>
+    <div class="admin" *ngIf="user.admin"><span style="display: flex; justify-content: center; align-items: center"><mat-icon [ngStyle]="{'color': 'green', 'font-size': '2vh'}">verified_user</mat-icon>ADMIN</span> <button style="background-color: #0078D4; color: white " [routerLink]="['/auth/admin']" mat-button>Assign permit</button></div>
+    <!-- <ng-template>
+      <button mat-button label="Editar" icon="pi pi-check">Editar</button>
+    </ng-template> -->
+    <div>
+      <button mat-button style="margin-top: 20px;" (click)="logout()">LOGOUT</button>
+    </div>
+  </mat-card>
+
+
+
+  <span style="width: 50%">
+    <p-accordion style="height: 60vh" [style]="{ width: '100%' }">
+      <p-accordionTab header="Folders owner">
+        <span *ngFor="let file of files">
+          <a
+            style="text-decoration: none; color: grey"
+            [attr.href]="'https://dlab.typsa.net/plataforma-montenegro/?path=' + file.fullPath"
+          >
+            <button
+              style="margin-right: 1rem"
+              mat-raised-button
+              *ngIf="file.path == ''"
+            >
+              {{ file.fullPath | titlecase }}
+
+              <mat-icon mat-list-icon style="color: yellow !important"
+                >folder</mat-icon
+              >
+            </button>
+          </a>
+        </span>
+        <mat-form-field  [style]="{ width: '100%' }"
+        matform
+        class="example-chip-list" *ngIf="!files.length">
+        <mat-chip-list>
+          <mat-chip ><b style="color: rgb(0, 120, 212)">At the moment you do not have folders created</b></mat-chip>
+        </mat-chip-list>
+      </mat-form-field>
+      </p-accordionTab>
+      <p-accordionTab header="Groups">
+        <mat-form-field
+          [style]="{ width: '100%' }"
+          matform
+          class="example-chip-list"
+        >
+          <mat-chip-list>
+            <mat-chip *ngFor="let user of userGroup">{{
+              user.groupName
+            }}</mat-chip>
+            <mat-chip *ngIf="!userGroup?.length"><b style="color: rgb(0, 120, 212)">You are not part of any user group</b></mat-chip>
+          </mat-chip-list>
+        </mat-form-field>
+      </p-accordionTab>
+
+      <p-accordionTab header="Files to verify">
+        <mat-form-field
+          [style]="{ width: '100%' }"
+          matform
+          class="example-chip-list"
+        >
+          <mat-chip-list>
+            <mat-chip
+            (click)="navigateToVerify(path)"
+            *ngFor="let path of user.filesToVerify"
+            >{{ path }}</mat-chip
+          >
+
+          <mat-chip *ngIf="!user.filesToVerify?.length"><b style="color: rgb(0, 120, 212)">You have no files to verify</b></mat-chip>
+        </mat-chip-list>
+        </mat-form-field>
+
+      </p-accordionTab>
+    </p-accordion>
+
+
+  </span>
+</span>

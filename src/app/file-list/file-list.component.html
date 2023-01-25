@@ -1,0 +1,174 @@
+<!-- <app-header></app-header> -->
+<div style="display: flex; width: 100%; height: calc(100vh - 64px - 6vh) ">
+  <div style="border: 1px solid lightgrey; width: 20%;height: calc(100%-64px-64px); ">
+    <mat-divider></mat-divider>
+
+    <div>
+      <button *ngIf="register.user.admin" [disabled]="!userData" mat-button [matMenuTriggerFor]="menuPrincipal" style="width: 100%;">
+        <mat-icon>upload</mat-icon> Create a principal folder
+      </button>
+      <div *ngIf="!register.user.admin"  style="width: 100%;  color: #BF1525; margin: 0; font-weight: 700; display: flex; align-items: center; justify-content: center; padding: .45rem">
+        Principal Folders
+      </div>
+      <mat-menu #menuPrincipal="matMenu">
+        <button  (click)="makeDirectory(true)" mat-menu-item style="width: 100%;">
+          <mat-icon style="color: yellow !important;">folder</mat-icon>Folder
+        </button>
+      </mat-menu>
+    </div>
+    <mat-divider></mat-divider>
+
+    <mat-selection-list  *ngFor="let folder of _activeFolders" >
+      <div style="display: flex; justify-content:space-between">
+        <mat-list-option [ngClass]="processPath(pathActive) == folder.fullPath?'miClase':''"  [ngStyle]="{width: '100%'}" (click)="goToOptionInThePrincipalPanel(folder)" id={{folder._id}}>
+          <mat-icon mat-list-icon *ngIf="!folder.isFile" style="color: yellow !important;">folder</mat-icon>
+          <mat-icon mat-list-icon *ngIf="folder.isFile">description</mat-icon>
+          <div>
+            <div mat-line>{{ folder.file }}</div>
+            <div mat-line>{{ folder.updatedAt | date }}</div>
+          </div>
+        </mat-list-option>
+
+        <div style="display: flex; justify-content: center; align-items: center;">
+          <button [disabled]="!register.user.admin" mat-icon-button style="height: 40px; width: 40px" mat-button [matMenuTriggerFor]="menu">
+            <mat-icon>more_horiz</mat-icon>
+          </button>
+          <mat-menu #menu="matMenu">
+            <button *ngIf="register.user.admin" mat-menu-item (click)="deleteFile(folder)">Delete</button>
+            <!-- <button mat-menu-item (click)="moveFile(folder)">Edit</button> -->
+            <button mat-menu-item (click)="assignPermit(folder)" *ngIf="register.user.admin">Manage
+              access</button>
+            <button mat-menu-item (click)="checkPermissions(folder)" *ngIf="register.user.admin">View
+              permissions</button>
+
+          </mat-menu>
+        </div>
+
+      </div>
+
+    </mat-selection-list>
+
+
+
+
+  </div>
+
+  <div style="width: 85%;">
+    <mat-divider></mat-divider>
+    <div>
+      <div style="display: flex; justify-content:space-between">
+      <button [disabled]="!this.topNavigation.length"  mat-button [matMenuTriggerFor]="menu">
+        <mat-icon>upload</mat-icon> Upload in {{this.topNavigation[lastPositionOfThePaths]}}
+      </button>
+      <button *ngIf="register.user.admin"  [disabled]="!userData" (click)="openUserGroupsDialog()" mat-button>
+        <mat-icon>supervisor_account</mat-icon> User groups
+      </button>
+    </div>
+      <mat-menu #menu="matMenu">
+        <button (click)="makeDirectory()" mat-menu-item>
+          <mat-icon style="color: yellow !important;">folder</mat-icon>Folder
+        </button>
+        <button (click)="uploadFile()" mat-menu-item>
+          <mat-icon>description</mat-icon>File
+        </button>
+      </mat-menu>
+    </div>
+    <mat-divider></mat-divider>
+    <mat-toolbar>
+
+      <div id="roadmap">
+        <span *ngFor="let item of topNavigation; let index = index">
+          <button mat-button (click)="getNavigation(index)">
+            <span>
+              <div style="display: flex; align-items:center; justify-content: center; gap: 1rem">
+                <span>{{ item }}</span>
+              </div>
+
+            </span>
+
+          </button>
+          <span *ngIf="index !== lastPositionOfThePaths" style="text-align: center; font-size: 2vh;">></span>
+        </span>
+      </div>
+      <div id="info">
+        <mat-menu #menu="matMenu">
+          <button mat-menu-item>Añadir carpeta</button>
+          <button mat-menu-item>Añadir archivo</button>
+        </mat-menu>
+      </div>
+    </mat-toolbar>
+
+    <div style="font-size: 16px;"  mat-subheader>Folders</div>
+    <div style="height: calc(100vh - 64px - 64px - 32px - 16px - 7vh - 36px); overflow: auto;" *ngIf="this.activeFolders.length && isTime">
+    <mat-selection-list *ngFor="let folder of activeFolders" [multiple]="false">
+      <div *ngIf="folder.path !== ''" style="display: flex; justify-content:space-between">
+        <mat-list-option [ngStyle]="{width: '100%'}" (click)="goToOption(folder)" id={{folder.path}} >
+          <mat-icon mat-list-icon *ngIf="!folder.isFile" style="color: yellow !important;">folder</mat-icon>
+          <mat-icon mat-list-icon *ngIf="folder.isFile">description</mat-icon>
+          <mat-icon matTooltip="User {{folder.userCreator}} needs you to verify this file" [ngStyle]="{'color':'red'}" mat-list-icon *ngIf="folder.isFile && userData === folder.userAssignedToVerify && (folder.status.Send || folder.status.Read)">warning</mat-icon>
+
+            <div>
+              <div mat-line>{{ folder.file }}</div>
+              <div mat-line>{{ folder.updatedAt | date }} - <b style="color: grey">{{folder.userCreator}}</b></div>
+            </div>
+        </mat-list-option>
+
+
+        <div  style="display: flex; justify-content:center; align-items: center;  ">
+          <div>
+              <button [disabled]="folder.userCreator !== userData && userData !== folder.userAssignedToVerify" *ngIf="folder.isFile" mat-icon-button  mat-button id={{folder._id}}  [ngClass]="{'display': !folder.status.Verified, 'none': folder.status.Verified}" (click)="verifyOrSendToVerify(folder)" > <mat-icon  [ngStyle]="{'color':'red'}">error_outline</mat-icon></button>
+            <span  id={{folder.fullPath}} [ngClass]="{'display': folder.verifiedBy, 'none': !folder.status.Verified}" matTooltip="Verified by {{folder.verifiedBy ? folder.verifiedBy : userData }}">
+              <mat-icon [ngStyle]="{'color':'green'}">check_circle</mat-icon>
+            </span>
+          </div>
+
+          <div style="display: flex; justify-content: center; align-items: center; margin-right: 1rem;">
+            <button mat-icon-button style="height: 100%" mat-button [matMenuTriggerFor]="menu">
+              <mat-icon>
+                more_horiz
+              </mat-icon>
+            </button>
+            <mat-menu #menu="matMenu">
+              <button *ngIf="register.user.admin" mat-menu-item (click)="deleteFile(folder)">Delete</button>
+              <button mat-menu-item (click)="moveFile(folder)">Edit</button>
+              <button mat-menu-item (click)="assignPermit(folder)" *ngIf="folder.userCreator === userData">Manage
+                access</button>
+              <button mat-menu-item (click)="checkPermissions(folder)" *ngIf="folder.userCreator === userData">View
+                permissions</button>
+              <button *ngIf="folder.isFile" mat-menu-item download><a style="color: inherit;
+                text-decoration: none;" href="https://dlab.typsa.net/montenegro-back/server/{{folder.fullPath}}" >Download</a></button>
+              <button (click)="showComments(folder)"  *ngIf=" folder.isFile" mat-menu-item download>Comments</button>
+              <button *ngIf="folder.status.Unassigned" mat-menu-item >State: <b style="color: red">Unassigned</b> </button>
+              <button *ngIf="folder.status.Send" mat-menu-item >State: <b style="color: blue">Pending to verify by {{folder.userAssignedToVerify}} </b></button>
+              <!-- <button *ngIf="folder.status.PendingToVerify" mat-menu-item >State: <b style="color: #Ff7e00">In verification</b></button> -->
+              <button *ngIf="folder.status.Read" mat-menu-item >State: <b style="color: #Ff7e00">File has been read by {{folder.userAssignedToVerify}}</b></button>
+              <button *ngIf="folder.status.Verified" mat-menu-item >State: <b style="color: green">Verified</b></button>
+            </mat-menu>
+          </div>
+        </div>
+
+      </div>
+
+    </mat-selection-list>
+    </div>
+
+    <div *ngIf="!this.activeFolders.length && isTime" style="width: 100%;height: calc(100% - 64px - 64px - 32px - 36px - 16px)">
+      <div
+        style="display: flex; justify-content: center; align-items: center; height: 100%; flex-direction: column; gap: 2rem">
+        <b>Folder is empty</b>
+        <img height="150" width="250" src="https://cdn.pixabay.com/photo/2014/04/03/00/40/folder-309052_960_720.png" />
+      </div>
+    </div>
+
+    <div *ngIf="isTime === false" style="height: 20%; width: 100%; display: flex; align-items:center; justify-content: center">
+      <div style=" display: flex; flex-direction: column; align-items:center; justify-content: center; gap:.5rem">
+        <mat-progress-spinner  mode="indeterminate"></mat-progress-spinner>
+        <h2>Uploading File..</h2>
+      </div>
+
+    </div>
+
+
+
+
+</div>

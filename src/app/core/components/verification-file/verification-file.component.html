@@ -1,0 +1,27 @@
+
+<div >
+  <span *ngIf="data.file.status.Unassigned">
+    <div mat-dialog-content>
+      <h1  mat-dialog-title style="text-align: center;">Send email to request verification</h1>
+      <mat-nav-list style="width: 100%">
+        <mat-form-field matform style="width: 100%;">
+          <input style="width: 100%; margin-bottom: 1rem;" matInput [(ngModel)]="data.emailVerifier"  placeholder="Please enter the user's email that should verify the file" />
+        </mat-form-field>
+      </mat-nav-list>
+
+    </div>
+  </span>
+  <div *ngIf="(data.file.status.Send || data.file.status.Read) && data.file.userAssignedToVerify.length" mat-dialog-content>
+<p>{{data.file.userAssignedToVerify}} has been assigned to verify the file</p>
+  </div>
+
+
+
+  <div mat-dialog-actions>
+
+    <!-- <button mat-button (click)="onNoClick()">No Thanks</button> -->
+    <button *ngIf="data.file.status.Unassigned " style="display: block; margin: auto" (click)="onSubmit()" mat-button [mat-dialog-close]="data.email" cdkFocusInitial>Ok</button>
+    <button *ngIf="data.file.status.PendingToVerify" style="display: block; margin: auto" mat-button [mat-dialog-close]="data.email" cdkFocusInitial>Ok</button>
+  </div>
+
+</div>

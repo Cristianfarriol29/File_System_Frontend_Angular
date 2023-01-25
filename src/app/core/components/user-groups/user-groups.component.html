@@ -1,0 +1,37 @@
+
+<h1 mat-dialog-title style="text-align: center;"> Create User Groups</h1>
+<div >
+  <div style="display: flex; justify-content:center; width: 100%" mat-dialog-content>
+    <mat-form-field matform  class="example-chip-list" >
+      <input style="width: 100%; margin-bottom: 1rem;" matInput [(ngModel)]="data.groupName" placeholder="New Group" />
+      <mat-chip-list >
+        <mat-chip (click)="showUserWithPermit(group)" *ngFor="let group of groups">{{group.groupName}}</mat-chip>
+      </mat-chip-list>
+    </mat-form-field>
+  </div>
+  <button [disabled]="!data.groupName.length" (click)="insertGroup()" mat-raised-button color="primary">Enter group</button>
+  </div>
+
+<div style="margin-top: 10px" *ngIf="name">
+<h2>Create a new User in {{name}}</h2>
+<div style="display: flex; justify-content:center; width: 100%" mat-dialog-content>
+
+  <mat-form-field matform  class="example-chip-list" >
+
+    <input style="width: 100%; margin-bottom: 1rem;" matInput [(ngModel)]="data.user" placeholder="New Colaborator" />
+
+    <mat-chip-list >
+      <mat-chip *ngFor="let user of groupToRender">{{user}}</mat-chip>
+    </mat-chip-list>
+  </mat-form-field>
+
+</div>
+<button [disabled]="!data.user.length" (click)="insertCollaborator()" mat-raised-button color="primary">Enter user</button>
+</div>
+
+
+<div mat-dialog-actions>
+
+  <!-- <button mat-button (click)="onNoClick()">No Thanks</button> -->
+  <button [disabled]="!data.user.length && !data.groupName" style="display: block; margin: auto" (click)="onSubmit()" mat-button [mat-dialog-close]="data.name" cdkFocusInitial>Ok</button>
+</div>

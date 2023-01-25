@@ -1,0 +1,35 @@
+<mat-toolbar-row style="display: grid; height: 50%" [@slide]>
+  <span style="display: flex">
+    <button mat-icon-button disabled>
+      <mat-icon>search</mat-icon>
+    </button>
+    <input
+    [(ngModel)]="busqueda"
+      type="text"
+      matInput
+      [matAutocomplete]="auto"
+      (keyup)="getBySearch($event)"
+      [ngStyle]="{ color: options.colorSearch }"
+
+    />
+    <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn">
+      <mat-option
+        *ngFor="let option of data"
+        [value]="option"
+      >
+        <span *ngIf="!option.isFile" (click)="goToPath(option.fullPath)">
+          <mat-icon mat-list-icon  style="color: yellow !important;">folder</mat-icon>
+          {{ option.file }} - <i style="font-size: 1.9vh; color: #C0392B"><b>{{option.fullPath}}</b></i>
+        </span>
+        <span *ngIf="option.isFile" (click)="goToPath(option.path)">
+          <mat-icon mat-list-icon >description</mat-icon>
+          {{ option.file }} - <i style="font-size: 1.9vh; color: #C0392B"><b>{{option.path}}</b></i></span>
+
+
+      </mat-option>
+
+    </mat-autocomplete>
+
+  </span>
+
+</mat-toolbar-row>

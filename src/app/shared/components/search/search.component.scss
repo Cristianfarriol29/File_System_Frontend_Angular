@@ -1,0 +1,26 @@
+mat-toolbar-row {
+  padding: 0 5px;
+  color: black;
+  width: calc(100vw - 100px - 35vw - 10vw);
+
+  input {
+    background: white;
+    position: relative;
+    top: 0;
+    z-index: 11;
+    flex: 1;
+    position: static;
+    font-size: 1rem;
+    border: 0;
+    outline: none;
+    justify-content: space-between;
+    // border-radius: 15px;
+    // width: 30vw;
+  }
+  ::placeholder {
+    color: var(--colorSearch);
+  }
+  mat-icon {
+    color: white;
+  }
+}
